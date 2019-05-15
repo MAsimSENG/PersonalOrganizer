@@ -39,15 +39,30 @@
     <div id="signinForm" class= "hide">
       <form>
           Email  <input type="text" name = "emailin"> <br>
-          Password<input type="password" name="passwordin"> <br> <br> 
+          Password<input type="password" name="passwordin"> <br> <br>
             <input type = "submit" value="signin">
       </form>
     </div>
 
     <div id="dashboard" class = "hide">
 
-    <button> Create a New list  </button>
+    <button id="newList"> Create a New list  </button>
 
+    <div id = "lists">
+        <ul>
+
+        </ul>
+    </div>
+
+    </div>
+
+    <div id="editList" class="hide">
+      <h3 id="listName">   </h3>
+      <form>
+          list name
+          <input type="text" name = "listName">
+          <input type="submit" value"enter">
+      </form>
     </div>
     <script src="main.js"> </script>
 
