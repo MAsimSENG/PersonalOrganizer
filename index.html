@@ -44,26 +44,50 @@
       </form>
     </div>
 
+    <div id="navigation" class="hide">
+        <button id="dashboard_nav"> <a href="#"> dashboard</a>
+          <button id= "settings_nav"> <a href="#"> Settings </a>
+
+    </div>
     <div id="dashboard" class = "hide">
 
     <button id="newList"> Create a New list  </button>
 
-    <div id = "lists">
-        <ul>
+        <ul id="lists">
 
         </ul>
-    </div>
+
 
     </div>
 
     <div id="editList" class="hide">
+
       <h3 id="listName">   </h3>
+
       <form>
           list name
           <input type="text" name = "listName">
           <input type="submit" value"enter">
       </form>
+
+      <ul id ="list">
+
+      </ul>
+
+      <form id="listInputForm">
+        <input type="text" id="listInput">
+        <input type="submit" value"Add to List">
+      </form>
+
     </div>
+
+    <div id="showList" class="hide">
+
+      <ul id="listValue">
+      </ul>
+
+    </div>
+
     <script src="main.js"> </script>
 
 
