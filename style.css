@@ -4,3 +4,8 @@
   display : none;
 
 }
+
+ .done {
+  color:gray;
+  text-decoration:line-through;
+}

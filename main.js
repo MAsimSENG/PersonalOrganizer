@@ -16,122 +16,130 @@ const listInputForm = document.getElementById("listInputForm");
 const navigation = document.getElementById("navigation");
 const listNameHeader = document.getElementById("listName");
 const showList = document.getElementById("showList");
-const valueList = document.getElementById("listValue");
+const needtoRemoveList = document.getElementById("list");
+list = document.getElementById("list");
 
 
 let userSessionData = {};
 
-
-// we have signup form, signinform, dashboard, editListapge, mainPage, settings
-function showThisPage(pageName) {
-  switch(pageName){
-
-case "dashboard":
-dashboard.classList.remove("hide");
-listEditPage.classList.add("hide");
-signupFormdiv.classList.add("hide");
-signinFormdiv.classList.add("hide");
-signinButtondiv.classList.add("hide");
-signupButtondiv.classList.add("hide");
-showList.classList.add("hide");
-
-break;
-
-case "listEditPage":
-dashboard.classList.add("hide");
-listEditPage.classList.remove("hide");
-signupFormdiv.classList.add("hide");
-signinFormdiv.classList.add("hide");
-signinButtondiv.classList.add("hide");
-signupButtondiv.classList.add("hide");
-showList.classList.add("hide");
-
-break;
-
-case "signupForm":
-dashboard.classList.add("hide");
-listEditPage.classList.add("hide");
-signupFormdiv.classList.remove("hide");
-signinFormdiv.classList.add("hide");
-signinButtondiv.classList.add("hide");
-signupButtondiv.classList.add("hide");
-showList.classList.add("hide");
-
-break;
-
-case "signinForm":
-dashboard.classList.add("hide");
-listEditPage.classList.add("hide");
-signupFormdiv.classList.add("hide");
-signinFormdiv.classList.remove("hide");
-signinButtondiv.classList.add("hide");
-signupButtondiv.classList.add("hide");
-showList.classList.add("hide");
-
-break;
-
-case "showList":
-dashboard.classList.add("hide");
-listEditPage.classList.add("hide");
-signupFormdiv.classList.add("hide");
-signinFormdiv.classList.add("hide");
-signinButtondiv.classList.add("hide");
-signupButtondiv.classList.add("hide");
-showList.classList.remove("hide");
-break;
-}
-
-}
-
 signinButtondiv.classList.remove("hide");
+
 signupButtondiv.classList.remove("hide");
 
 
+// we have signup form, signinform, dashboard, editListapge, mainPage, settings
+function showThisPage(pageName) {
+  switch (pageName) {
+
+    case "dashboard":
+      dashboard.classList.remove("hide");
+      listEditPage.classList.add("hide");
+      signupFormdiv.classList.add("hide");
+      signinFormdiv.classList.add("hide");
+      signinButtondiv.classList.add("hide");
+      signupButtondiv.classList.add("hide");
+
+      break;
+
+    case "listEditPage":
+      dashboard.classList.add("hide");
+      listEditPage.classList.remove("hide");
+      signupFormdiv.classList.add("hide");
+      signinFormdiv.classList.add("hide");
+      signinButtondiv.classList.add("hide");
+      signupButtondiv.classList.add("hide");
+
+      break;
+
+    case "signupForm":
+      dashboard.classList.add("hide");
+      listEditPage.classList.add("hide");
+      signupFormdiv.classList.remove("hide");
+      signinFormdiv.classList.add("hide");
+      signinButtondiv.classList.add("hide");
+      signupButtondiv.classList.add("hide");
+
+      break;
+
+    case "signinForm":
+      dashboard.classList.add("hide");
+      listEditPage.classList.add("hide");
+      signupFormdiv.classList.add("hide");
+      signinFormdiv.classList.remove("hide");
+      signinButtondiv.classList.add("hide");
+      signupButtondiv.classList.add("hide");
+
+      break;
+
+    case "showList":
+      dashboard.classList.add("hide");
+      listEditPage.classList.add("hide");
+      signupFormdiv.classList.add("hide");
+      signinFormdiv.classList.add("hide");
+      signinButtondiv.classList.add("hide");
+      signupButtondiv.classList.add("hide");
+      break;
+  }
+
+}
+
+function validateUser(email, password, user) {
+
+  // validate user credentials
+  if (user.email == email && user.password == password) {
+
+    showThisPage("dashboard");
+
+    return true;
+
+  }
+
+  return false;
+
+}
+
+function setLinktoListPageAndShowList(dashboardListWithLi, userSessionData) {
+
+   dashboardListWithLi = dashboardListWithLi.children;
 
 
+  for (li of dashboardListWithLi) {
 
-signinButton.addEventListener("click", (e) => {
+      li = li.firstElementChild;
 
-  signinButtondiv.classList.add("hide");
+      li.addEventListener("click", (e) => {
 
-  signupButtondiv.classList.add("hide");
+        needtoRemoveList.innerHTML="";
 
-  showThisPage("signinForm");
+        showThisPage("listEditPage");
 
-});
+        //showThisPage("showList");
 
-signupButton.addEventListener("click", (e) => {
+        listName = e.target.innerHTML;
+        listNameHeader.innerText = listName;
 
-  signupButtondiv.classList.add("hide");
-
-  signinButtondiv.classList.add("hide");
-
-showThisPage("signupForm");
-
-});
+        listItems = userSessionData["alist"][listName];
 
 
-dashboard_nav_button.addEventListener("click",(e)=>{
+          for (listItem of listItems) {
 
-  showThisPage("dashboard");
+            li = document.createElement("li");
 
-  valueList.innerHTML="";
+            li.innerText = listItem;
 
-  user = JSON.parse(localStorage.getItem(email))
+              list.appendChild(li);
 
-  userSessionData = user
+      }
 
-// get the names of all the lists in memory
-  let listNames = Object.keys(userSessionData.alist);
+    });
 
-  // lists is ul that holds all the list names
-  let lists = document.getElementById("lists");
+  }
+}
 
-  // to prevent lists from repeating themselves
-  lists.innerHTML="";
+// dashboard list : <ul> listNames <li>
+function createDashboardList(listNames, dashboardList) {
 
-// loop over all the list names in memory and make them an li
-  for(listName of listNames){
+  for (let listName of listNames) {
 
     ahref = document.createElement("a");
 
@@ -139,188 +147,204 @@ dashboard_nav_button.addEventListener("click",(e)=>{
 
     ahref.appendChild(li);
 
-    ahref.setAttribute('href',"#");
+    ahref.setAttribute('href', "#");
 
     li.innerText = listName;
 
-    li.addEventListener("click",(e)=>{
-      
-      let listName = e.target.innerHTML;
+    dashboardList.appendChild(ahref);
 
-      showThisPage("showList");
-
-
-      listItems = userSessionData["alist"][listName];
-
-
-      for(listItem of listItems){
-
-        li = document.createElement("li");
-
-        li.innerText = listItem;
-
-        valueList.appendChild(li);
-
-      }
-
-    });
-
-    lists.appendChild(ahref);
 
   }
+  return dashboardList;
 
-});
-
-settings_nav_button.addEventListener("click",(e)=>{
-  // show this page settings
-});
+}
 
 
-signupForm.addEventListener("submit", (e) => {
-
-  e.preventDefault();
-  fn = document.getElementsByName("firstName")[0].value;
-  ln = document.getElementsByName("lastName")[0].value;
-  email = document.getElementsByName("email")[0].value;
-  password = document.getElementsByName("password")[0].value;
-
-  let userData = {
-    firstName: fn,
-    lastName: ln,
-    email: email,
-    password:password,
-    alist: {
-
-    }
-  } ;
-  localStorage.setItem(email, JSON.stringify(userData));
-  signupFormdiv.classList.add("hide");
-  showThisPage("dashboard");
-  navigation.classList.remove("hide");
+  // a user can click on create new list and add title to it and list listItems
+  // a user can click on an existing list and edit the title and add more items and cross out existing items
+  // have one page for the lists with two conditions: if "create new list " is clicked
+  // we create the same page but just empty
+  // if an existing list is clicked we load its content and maintain its editability
+  // dashboard and sigin,
 
 
-});
 
-signinForm.addEventListener("submit", (e)=> {
+  signinButton.addEventListener("click", (e) => {
+
+    signinButtondiv.classList.add("hide");
+
+    signupButtondiv.classList.add("hide");
+
+    showThisPage("signinForm");
+
+  });
+
+  signupButton.addEventListener("click", (e) => {
+
+    signupButtondiv.classList.add("hide");
+
+    signinButtondiv.classList.add("hide");
+
+    showThisPage("signupForm");
+
+  });
+
+
+  dashboard_nav_button.addEventListener("click", (e) => {
+
+    showThisPage("dashboard");
+
+    // get the names of all the lists in memory
+    let listNames = Object.keys(userSessionData.alist);
+
+    // lists is ul that holds all the list names
+    let dashboardList = document.getElementById("lists");
+
+    // to prevent lists from repeating themselves
+    dashboardList.innerHTML = "";
+
+    dashboardListWithLi = createDashboardList(listNames, dashboardList);
+
+    setLinktoListPageAndShowList(dashboardListWithLi, userSessionData);
+
+  });
+
+  settings_nav_button.addEventListener("click", (e) => {
+    // show this page settings
+  });
+
+
+  signupForm.addEventListener("submit", (e) => {
+
+    e.preventDefault();
+    fn = document.getElementsByName("firstName")[0].value;
+    ln = document.getElementsByName("lastName")[0].value;
+    email = document.getElementsByName("email")[0].value;
+    password = document.getElementsByName("password")[0].value;
+
+    let userData = {
+      firstName: fn,
+      lastName: ln,
+      email: email,
+      password: password,
+      alist: {
+
+      }
+    };
+    localStorage.setItem(email, JSON.stringify(userData));
+
+    showThisPage("dashboard");
+
+  });
+
+  signinForm.addEventListener("submit", (e) => {
+
     e.preventDefault();
 
-// get user email and password from the input forms and also user object
-    email = document.getElementsByName("emailin")[0].value
+    // get user email and password from the input forms and also user object
+    let email = document.getElementsByName("emailin")[0].value;
 
-    password = document.getElementsByName("passwordin")[0].value
+    let password = document.getElementsByName("passwordin")[0].value;
 
     let user = JSON.parse(localStorage.getItem(email));
 
-// validate user credentials
-    if(user.email == email && user.password == password){
+    let isAuthorized = validateUser(email, password, user);
 
-      signinFormdiv.classList.add("hide");
+    userSessionData = user;
+
+
+    // if the user has any existing lists
+    if (Object.keys(userSessionData.alist) && isAuthorized) {
 
       showThisPage("dashboard");
-
       navigation.classList.remove("hide");
-
-      userSessionData = user;
-
-    }
-
-// if the user has any existing lists
-    if(Object.keys(userSessionData.alist)) {
 
       // get the names of the existing lists
       let listNames = Object.keys(userSessionData.alist);
 
-      let lists = document.getElementById("lists");
+      let dashboardList = document.getElementById("lists");
 
       // add each existing list as a li in ul on dashboard
       // inside for loop we create <a href="#"> <li> list name </li>  </a>
-      for(listName of listNames){
+      dashboardListWithLi = createDashboardList(listNames, dashboardList);
 
-        ahref = document.createElement("a");
+      setLinktoListPageAndShowList(dashboardListWithLi, userSessionData);
 
-        li = document.createElement("li");
-
-        ahref.appendChild(li);
-
-        ahref.setAttribute('href',"#");
-
-        li.innerText = listName;
-
-        lists.appendChild(ahref);
-
-        li.addEventListener("click",(e)=>{
-
-          showThisPage("showList");
-
-          listItems = userSessionData["alist"][listName];
-
-
-          for(listItem of listItems){
-
-            li = document.createElement("li");
-
-            li.innerText = listItem;
-
-            valueList.appendChild(li);
-
-          }
-
-      });
 
     }
 
+  });
+
+
+  newListButton.addEventListener("click", (e) => {
+
+    e.preventDefault();
+
+    listNameHeader.innerHTML = "";
+
+    list.innerHTML = "";
+
+    showThisPage("listEditPage");
+
+  });
+
+
+  listEditPageNameForm.addEventListener("submit", (e) => {
+
+    e.preventDefault();
+
+    listName = document.getElementsByName("listName")[0].value;
+
+    // if we are creating a new list then create a new empty list
+
+    if ( listNameHeader.innerHTML == ""){
+
+      userSessionData["alist"][listName] = []; // name:[]
+
+      email = userSessionData.email;
+
+      localStorage.setItem(email, JSON.stringify(userSessionData));
+
+      listNameHeader.innerHTML = listName;
+
+    }
+    else {
+
+      // delete the previous object and rename the list
+    userSessionData["alist"][listName] = userSessionData["alist"][listNameHeader.innerHTML];
+
+    delete userSessionData["alist"][listNameHeader.innerHTML];
+
+    email = userSessionData.email;
+
+    localStorage.setItem(email, JSON.stringify(userSessionData));
+
+    listNameHeader.innerHTML = listName;
+
 }
-});
 
 
-newListButton.addEventListener("click",(e)=>{
-
-  e.preventDefault();
-
-  listNameHeader.innerHTML = "";
-
-  list.innerHTML="";
-
-  showThisPage("listEditPage");
-
-});
+  });
 
 
-listEditPageNameForm.addEventListener("submit",(e)=>{
+  listInputForm.addEventListener("submit", (e) => {
 
-  e.preventDefault();
+    e.preventDefault();
 
-  listName = document.getElementsByName("listName")[0].value;
+    listInput = document.getElementById("listInput").value;
 
-  userSessionData.alist[listName] = []; // name:[]
+    li = document.createElement("li");
 
-  email = userSessionData.email;
+    li.innerText = listInput;
 
-  localStorage.setItem(email, JSON.stringify(userSessionData));
+    list.appendChild(li);
 
-  listNameHeader.innerHTML = listName;
+    listName = listNameHeader.innerHTML;
 
-});
+    userSessionData["alist"][listName].push(listInput);
 
+    email = userSessionData.email;
 
-listInputForm.addEventListener("submit",(e)=>{
+    localStorage.setItem(email, JSON.stringify(userSessionData));
 
-  e.preventDefault();
-
- listInput = document.getElementById("listInput").value;
-
- li = document.createElement("li");
-
- li.innerText = listInput;
-
-list = document.getElementById("list");
-
-list.appendChild(li);
-
-listName = listNameHeader.innerHTML;
-
-userSessionData["alist"][listName].push(listInput);
-
-localStorage.setItem(email, JSON.stringify(userSessionData));
-
-});
+  });
